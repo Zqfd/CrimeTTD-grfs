@@ -1,0 +1,135 @@
+//define the grf
+grf {
+    grfid: "NML\03";
+    name: string(STR_GRF_NAME);
+    desc: string(STR_GRF_DESCRIPTION);
+    version: 0;
+    min_compatible_version: 0;
+}
+
+/* Sprite template for a truck */
+template tmpl_truck(x, y) {
+    //left_x, upper_y, width, height, offset_x, offset_y
+    [  0 + x, y,        8,    18,      -3,      -10]
+    [ 16 + x, y,       20,    16,     -14,       -7]
+    [ 48 + x, y,       28,    12,     -14,       -6]
+    [ 96 + x, y,       20,    16,      -6,       -7]
+    [128 + x, y,        8,    18,      -3,      -10]
+    [144 + x, y,       20,    16,     -14,       -7]
+    [176 + x, y,       28,    12,     -14,       -6]
+    [224 + x, y,       20,    16,      -6,       -7]
+}
+
+/* Define a cargo translation table
+ * All cargo types that need any special treatment must be included here */
+cargotable {
+    PAPR, // Paper
+    STEL, // Steel
+    COPR, // Copper
+    WOOD, // Wood
+}
+
+/* Define various cargo-specific graphics */
+
+/* Paper */
+spriteset(spriteset_flatbed_truck_1_paper_empty, "gfx/flatbed_truck_1_paper.png") { 
+    tmpl_truck(0, 0) 
+}
+spriteset(spriteset_flatbed_truck_1_paper_full, "gfx/flatbed_truck_1_paper.png") { 
+    tmpl_truck(260, 0) 
+}
+spritegroup spritegroup_flatbed_truck_1_paper {
+    loaded: [spriteset_flatbed_truck_1_paper_empty, spriteset_flatbed_truck_1_paper_full];
+    loading: [spriteset_flatbed_truck_1_paper_empty, spriteset_flatbed_truck_1_paper_full];
+}
+
+/* Steel */
+spriteset(spriteset_flatbed_truck_1_steel_empty, "gfx/flatbed_truck_1_steel.png") { 
+    tmpl_truck(0, 0) 
+}
+spriteset(spriteset_flatbed_truck_1_steel_full, "gfx/flatbed_truck_1_steel.png") { 
+    tmpl_truck(260, 0) 
+}
+spritegroup spritegroup_flatbed_truck_1_steel {
+    loaded: [spriteset_flatbed_truck_1_steel_empty, spriteset_flatbed_truck_1_steel_full];
+    loading: [spriteset_flatbed_truck_1_steel_empty, spriteset_flatbed_truck_1_steel_full];
+}
+
+/* Wood */
+spriteset(spriteset_flatbed_truck_1_wood_empty, "gfx/flatbed_truck_1_wood.png") { 
+    tmpl_truck(0, 0) 
+}
+spriteset(spriteset_flatbed_truck_1_wood_full, "gfx/flatbed_truck_1_wood.png") { 
+    tmpl_truck(260, 0) 
+}
+spritegroup spritegroup_flatbed_truck_1_wood {
+    loaded: [spriteset_flatbed_truck_1_wood_empty, spriteset_flatbed_truck_1_wood_full];
+    loading: [spriteset_flatbed_truck_1_wood_empty, spriteset_flatbed_truck_1_wood_full];
+}
+
+/* Copper */
+spriteset(spriteset_flatbed_truck_1_copper_empty, "gfx/flatbed_truck_1_copper.png") { 
+    tmpl_truck(0, 0) 
+}
+spriteset(spriteset_flatbed_truck_1_copper_full, "gfx/flatbed_truck_1_copper.png") { 
+    tmpl_truck(260, 0) 
+}
+spritegroup spritegroup_flatbed_truck_1_copper {
+    loaded: [spriteset_flatbed_truck_1_copper_empty, spriteset_flatbed_truck_1_copper_full];
+    loading: [spriteset_flatbed_truck_1_copper_empty, spriteset_flatbed_truck_1_copper_full];
+}
+
+/* Goods */
+spriteset(spriteset_flatbed_truck_1_goods_empty, "gfx/flatbed_truck_1_goods.png") {
+    tmpl_truck(0, 0)
+}
+spriteset(spriteset_flatbed_truck_1_goods_full, "gfx/flatbed_truck_1_goods.png") {
+    tmpl_truck(260, 0)
+}
+spritegroup spritegroup_flatbed_truck_1_goods {
+    loaded: [spriteset_flatbed_truck_1_goods_empty, spriteset_flatbed_truck_1_goods_full];
+    loading: [spriteset_flatbed_truck_1_goods_empty, spriteset_flatbed_truck_1_goods_full];
+}
+
+/* Define the road vehicle */
+item(FEAT_ROADVEHS, item_flatbed_truck_1) {
+    property {
+        /* Properties common to all vehicle types */
+        name:                           string(STR_NAME_FLATBED_TRUCK_1);
+        climates_available:             bitmask(CLIMATE_TEMPERATE, CLIMATE_ARCTIC, CLIMATE_TROPICAL);
+        introduction_date:              date(1926,01,01);
+        model_life:                     65;
+        /* retire_early not set, use default retirement behaviour */
+        vehicle_life:                   15;
+        reliability_decay:              20;
+        refittable_cargo_classes:       bitmask(CC_PIECE_GOODS, CC_EXPRESS);
+        non_refittable_cargo_classes:   bitmask(CC_PASSENGERS, CC_REFRIGERATED);
+        loading_speed:                  5;
+        cost_factor:                    108;
+        running_cost_factor:            90;
+        /* cargo_age_period is left at default */
+
+        /* RV-specific properties */
+        sprite_id:                      SPRITE_ID_NEW_ROADVEH; //enable new graphics
+        speed:                          48 km/h;
+        misc_flags:                     bitmask(ROADVEH_FLAG_2CC);
+        refit_cost:                     0; // Refitting is free
+        /* callback_flags are not set, no need to manually enable callbacks */
+        running_cost_base:              RUNNING_COST_ROADVEH;
+        power:                          120 hp;
+        weight:                         9.5 ton;
+        /* TE and air drag coefficient is left at default */
+        cargo_capacity:                 20;
+        sound_effect:                   SOUND_DEPARTURE_OLD_RV_1;
+        /* Visual effect is left at default (no effect) */
+    }
+
+    /* Define graphics */
+    graphics {
+        PAPR: spritegroup_flatbed_truck_1_paper;
+        STEL: spritegroup_flatbed_truck_1_steel;
+        COPR: spritegroup_flatbed_truck_1_copper;
+        WOOD: spritegroup_flatbed_truck_1_wood;
+        default: spritegroup_flatbed_truck_1_goods; // Default to a goods container.
+    }
+}

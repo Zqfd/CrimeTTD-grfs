@@ -1,0 +1,9 @@
+##grflangid 0x01
+# English Language pack by Zqfd
+
+#Name and description definitions
+STR_GRF_NAME		:{TITLE} {VERSION}
+STR_GRF_DESCRIPTION	:Set of GRFs for CrimeTTD {COPYRIGHT} 2024 Licence: GPL v2
+
+#vehicles name
+STR_NAME_FLATBED_TRUCK_1	:Creepy van
